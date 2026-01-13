@@ -1,16 +1,19 @@
 using MediatR;
 using Application.Interfaces;
 using Domain.Entities;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.Orders.Commands.CreateOrder;
 
 public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, int>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<CreateOrderHandler> _logger;
 
-    public CreateOrderHandler(IUnitOfWork unitOfWork)
+    public CreateOrderHandler(IUnitOfWork unitOfWork, ILogger<CreateOrderHandler> logger)
     {
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     public async Task<int> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
@@ -18,7 +21,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, int>
         var customer = await _unitOfWork.Customers.GetByIdAsync(request.CustomerId);
         if (customer == null)
         {
-            // In a real app, you might use a custom NotFoundException here
+            _logger.LogWarning("Attempted to create order for non-existent Customer ID: {CustomerId}", request.CustomerId);
             throw new Exception($"Customer with ID {request.CustomerId} not found.");
         }
 
@@ -32,6 +35,7 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, int>
         await _unitOfWork.Orders.AddAsync(order);
         await _unitOfWork.SaveChangesAsync();
 
+        _logger.LogInformation("Order {OrderId} created successfully for Customer {CustomerId}", order.Id, request.CustomerId);
         return order.Id;
     }
 }
