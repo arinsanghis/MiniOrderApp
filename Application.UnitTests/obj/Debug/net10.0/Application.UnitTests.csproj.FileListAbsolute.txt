@@ -122,3 +122,4 @@
 /Users/arin/MiniOrderApp/Application.UnitTests/obj/Debug/net10.0/Application.UnitTests.pdb
 /Users/arin/MiniOrderApp/Application.UnitTests/obj/Debug/net10.0/Application.UnitTests.genruntimeconfig.cache
 /Users/arin/MiniOrderApp/Application.UnitTests/obj/Debug/net10.0/ref/Application.UnitTests.dll
+/Users/arin/MiniOrderApp/Application.UnitTests/obj/Debug/net10.0/Application.UnitTests.sourcelink.json

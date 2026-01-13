@@ -220,3 +220,4 @@
 /Users/arin/MiniOrderApp/Api/obj/Debug/net10.0/Api.pdb
 /Users/arin/MiniOrderApp/Api/obj/Debug/net10.0/Api.genruntimeconfig.cache
 /Users/arin/MiniOrderApp/Api/obj/Debug/net10.0/ref/Api.dll
+/Users/arin/MiniOrderApp/Api/obj/Debug/net10.0/Api.sourcelink.json

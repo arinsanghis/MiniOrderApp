@@ -9,3 +9,4 @@
 /Users/arin/MiniOrderApp/Domain/obj/Debug/net10.0/refint/Domain.dll
 /Users/arin/MiniOrderApp/Domain/obj/Debug/net10.0/Domain.pdb
 /Users/arin/MiniOrderApp/Domain/obj/Debug/net10.0/ref/Domain.dll
+/Users/arin/MiniOrderApp/Domain/obj/Debug/net10.0/Domain.sourcelink.json

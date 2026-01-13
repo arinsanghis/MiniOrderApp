@@ -13,3 +13,4 @@
 /Users/arin/MiniOrderApp/Application/obj/Debug/net10.0/refint/Application.dll
 /Users/arin/MiniOrderApp/Application/obj/Debug/net10.0/Application.pdb
 /Users/arin/MiniOrderApp/Application/obj/Debug/net10.0/ref/Application.dll
+/Users/arin/MiniOrderApp/Application/obj/Debug/net10.0/Application.sourcelink.json
