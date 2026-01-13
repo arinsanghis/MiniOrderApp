@@ -15,7 +15,6 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, int>
 
     public async Task<int> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
     {
-        // 1. Business Logic: Check if customer exists
         var customer = await _unitOfWork.Customers.GetByIdAsync(request.CustomerId);
         if (customer == null)
         {
@@ -23,7 +22,6 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, int>
             throw new Exception($"Customer with ID {request.CustomerId} not found.");
         }
 
-        // 2. Map Command to Entity
         var order = new Order
         {
             CustomerId = request.CustomerId,
@@ -31,7 +29,6 @@ public class CreateOrderHandler : IRequestHandler<CreateOrderCommand, int>
             OrderDate = DateTime.UtcNow
         };
 
-        // 3. Save using Unit of Work
         await _unitOfWork.Orders.AddAsync(order);
         await _unitOfWork.SaveChangesAsync();
 

@@ -1,4 +1,5 @@
 using Application.Features.Orders.Commands.CreateOrder;
+using Application.Features.Orders.Queries.GetOrdersByCustomerId;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,5 +21,12 @@ public class OrdersController : ControllerBase
     {
         var orderId = await _mediator.Send(command);
         return Ok(new { OrderId = orderId });
+    }
+
+    [HttpGet("customer/{customerId}")]
+    public async Task<IActionResult> GetOrdersByCustomer(int customerId)
+    {
+        var orders = await _mediator.Send(new GetOrdersByCustomerIdQuery(customerId));
+        return Ok(orders);
     }
 }
