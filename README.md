@@ -1,67 +1,67 @@
-# Mini Order Management Application
+# Mini Order Management System
 
-## 📋 Overview
-A backend API built with **.NET 10** demonstrating **Clean Architecture**, **CQRS**, and **Domain-Driven Design (DDD)** principles. The application manages Customers and Orders with strict business rules and validation.
+## Solution Overview
+A RESTful API designed for managing customers and orders, built with **.NET 10**. This solution enforces **Clean Architecture** principles to ensure separation of concerns, scalability, and testability.
 
-## 🚀 Technologies
-* **.NET 10** (Web API)
-* **Entity Framework Core** (Code First)
-* **SQLite** (for portability)
-* **MediatR** (CQRS Pattern)
-* **FluentValidation** (Validation Pipeline)
+The core domain logic is isolated from external frameworks, adhering to **Domain-Driven Design (DDD)** practices. Data consistency and business rules (e.g., validation pipelines) are enforced within the Application and Domain layers.
+
+## Architecture & Design Decisions
+
+### Clean Architecture
+The solution is organized into four concentric layers:
+* **Domain**: Contains enterprise logic, Entities (Aggregate Roots), and Value Objects. No external dependencies.
+* **Application**: Orchestrates business use cases. Defines Interfaces (Abstractions) for infrastructure to implement.
+* **Infrastructure**: Implements data access, file systems, and external services (EF Core DbContext, Repositories).
+* **API**: The entry point (Presentation Layer). Controllers are thin and strictly delegate work to the Application layer.
+
+### Pattern Implementations
+* **CQRS (Command Query Responsibility Segregation)**: Implemented using **MediatR**. Write operations (Commands) and Read operations (Queries) are handled independently, allowing for optimized query models and distinct validation flows.
+* **Repository & Unit of Work**: Wraps  to decouple the Application layer from EF Core. The Unit of Work pattern ensures atomic transactions across multiple repositories.
+* **Validation**: **FluentValidation** is integrated into the request pipeline to enforce rules (e.g., non-empty names, positive order totals) before handlers execute.
+
+## Tech Stack
+* **.NET 10 (C#)**
+* **Entity Framework Core** (Code-First)
+* **SQLite** (Selected for portability and ease of local setup)
 * **xUnit & Moq** (Unit Testing)
-* **Swagger/OpenAPI** (Documentation)
+* **Swagger / OpenAPI**
 
-## 🏗 Architecture & Design Patterns
-
-### 1. Clean Architecture
-The solution is strictly separated into concentric layers:
-* **Domain:** The core. Contains Entities (`Customer`, `Order`) and Enums. No external dependencies.
-* **Application:** Business logic. Contains CQRS Handlers, Validators, and Interfaces (`IUnitOfWork`).
-* **Infrastructure:** External concerns. Implements EF Core `DbContext` and Repositories.
-* **API:** Entry point. Thin controllers that delegate requests to MediatR.
-
-### 2. CQRS (Command Query Responsibility Segregation)
-Reads and Writes are separated:
-* **Commands:** Change state (e.g., `CreateOrderCommand`).
-* **Queries:** Retrieve data (e.g., `GetCustomerByIdQuery`).
-* This decoupling allows independent scaling and simpler logic for each operation.
-
-### 3. Repository & Unit of Work
-* **Generic Repository:** Handles standard CRUD to reduce boilerplate.
-* **Unit of Work:** Ensures database transactions are atomic. Multiple repositories share the same context, so changes are saved explicitly via `_unitOfWork.SaveChangesAsync()`.
-
-### 4. DDD Approach
-The **Customer** acts as an Aggregate Root. Relationships (1:1 with Profile, 1:N with Orders) are defined strictly in the Domain layer to ensure data integrity.
-
-## 🛠 How to Run
+## Setup Instructions
 
 ### Prerequisites
-* .NET SDK
-* VS Code or Visual Studio
+* .NET 10 SDK
+* Git
 
-### Setup & Database
-1.  Clone the repository.
-2.  Navigate to the solution folder.
-3.  Restore dependencies:
+### Installation & Database
+1.  Restore dependencies:
     ```bash
     dotnet restore
     ```
-4.  Apply Database Migrations (Creates `miniorder.db`):
+
+2.  Apply Entity Framework migrations to create the local SQLite database (`miniorder.db`):
     ```bash
     dotnet ef database update --project Infrastructure --startup-project Api
     ```
 
-### Running the API
+### Running the Application
+Launch the API:
 ```bash
 dotnet run --project Api
 ```
-Once running, open the Swagger UI to test endpoints:
-👉 **http://localhost:5xxx/swagger**
 
-## 🧪 Testing
-The solution includes Unit Tests using **xUnit** and **Moq** to validate business logic in isolation.
-Run tests with:
+Access the Swagger UI at:
+**http://localhost:5xxx/swagger** (Port varies based on local Kestrel configuration, typically 5000-5200).
+
+## Testing
+The solution includes a dedicated Unit Test project covering command handlers and business logic. Dependencies such as the Repository and Unit of Work are mocked to ensure isolated testing.
+
+Execute tests via:
 ```bash
 dotnet test
 ```
+
+## Project Structure
+* **Api**: Controllers, Program.cs (DI Container), Middleware configuration.
+* **Application**: CQRS Handlers, DTOs, Validator definitions, Interfaces.
+* **Domain**: Entities (Customer, Order), Enums, Exceptions.
+* **Infrastructure**: EF Core configurations, Migrations, Repository implementations.
