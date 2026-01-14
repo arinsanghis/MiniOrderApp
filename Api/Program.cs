@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Application.Features.Orders.Commands.CreateOrder;
 using Application.Features.Customers.Commands.CreateCustomer;
 using Application.Features.Customers.Queries.GetCustomerById;
@@ -5,13 +6,12 @@ using Application.Interfaces;
 using FluentValidation;
 using Infrastructure.Persistence;
 using Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization; // Required for the fix
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"), o => o.UseQuerySplittingBehavior(QuerySplittingBehavior.SplitQuery)));
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
